@@ -10,7 +10,7 @@
 
     // Block and block menu descriptions
     var descriptor = {
-        blocks: [ ' ', 'hello world'
+        blocks: [ [' ', 'hello world']
         ]
     };
 
