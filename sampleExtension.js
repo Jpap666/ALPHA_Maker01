@@ -36,5 +36,5 @@
     };
 
     // Register the extension
-    ScratchExtensions.register('Maker extension', descriptor, ext);
+    ScratchExtensions.register('Alarm extension', descriptor, ext);
 })({});
