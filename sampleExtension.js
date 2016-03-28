@@ -31,7 +31,7 @@
     var descriptor = {
         blocks: [
             ['', 'wait %n seconds', 'set_alarm', '2'],
-            ['h', 'when ALPHA Maker is connecet goes off', 'when_alarm'],
+            ['h', 'when ALPHA Maker is connecet', 'when_alarm'],
         ]
     };
 
