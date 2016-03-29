@@ -1,22 +1,56 @@
 (function(ext) {
-    var alarm_went_off = false; // This becomes true after the alarm goes off
+    var device = null;
+    var rawData = null;
+    
+    // Configure serial baudrate = 9600, parity=none, stopbits=1, databits=8
+    
+    // Extension API interactions
+    var potentialDevices = [];
+    ext._deviceConnected = function(dev) {
+        potentialDevices.push(dev);
 
+        if (!device) {
+            tryNextDevice();
+        }
+    }
 
-    ext.set_alarm = function(time) {
-       window.setTimeout(function() {
-           alarm_went_off = true;
-       }, time*1000);
-    };
+    var poller = null;
+    var watchdog = null;
+    function tryNextDevice() {
+        // If potentialDevices is empty, device will be undefined.
+        // That will get us back here next time a device is connected.
+        device = potentialDevices.shift();
+        if (!device) return;
 
-    ext.when_alarm = function() {
-       // Reset alarm_went_off if it is true, and return true
-       // otherwise, return false.
-       if (alarm_went_off === true) {
-           alarm_went_off = false;
-           return true;
-       }
+        device.open({ stopBits: 0, bitRate: 38400, ctsFlowControl: 0 });
+        device.set_receive_handler(function(data) {
+            //console.log('Received: ' + data.byteLength);
+            if(!rawData || rawData.byteLength == 18) rawData = new Uint8Array(data);
+            else rawData = appendBuffer(rawData, data);
 
-       return false;
+            if(rawData.byteLength >= 18) {
+                //console.log(rawData);
+                processData();
+                //device.send(pingCmd.buffer);
+            }
+        });
+
+        // Tell the PicoBoard to send a input data every 50ms
+        var pingCmd = new Uint8Array(1);
+        pingCmd[0] = 1;
+        poller = setInterval(function() {
+            device.send(pingCmd.buffer);
+        }, 50);
+        watchdog = setTimeout(function() {
+            // This device didn't get good data in time, so give up on it. Clean up and then move on.
+            // If we get good data then we'll terminate this watchdog.
+            clearInterval(poller);
+            poller = null;
+            device.set_receive_handler(null);
+            device.close();
+            device = null;
+            tryNextDevice();
+        }, 250);
     };
 
     //*************************************************************
@@ -42,10 +76,7 @@
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
-            ['h', 'when %m.booleanSensor',         'whenSensorConnected', 'button pressed'],
-            ['h', 'when %m.sensor %m.lessMore %n', 'whenSensorPass',      'slider', '>', 50],
-            ['b', 'sensor %m.booleanSensor?',      'sensorPressed',       'button pressed'],
-            ['r', '%m.sensor sensor value',        'sensor',              'slider']
+            
         ],
         menus: {
             booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
