@@ -32,7 +32,7 @@
 
         console.log('Aqui 8. ');
 
-        if (watchdog && (bytes[1] == 77)) {
+        if (watchdog && (bytes[0] = 77)) {
             // Seems to be a valid PicoBoard.
             clearTimeout(watchdog);
             watchdog = null;
@@ -57,7 +57,7 @@
         
         device.set_receive_handler(function(data) {
             console.log('Aqui: 5'); // + data.byteLength);
-            if(!rawData || rawData.byteLength == 18) rawData = new Uint8Array(data);
+            if(!rawData || rawData.byteLength == 1) rawData = new Uint8Array(data);
             else rawData = appendBuffer(rawData, data);
 
             if(rawData.byteLength >= 1) {
