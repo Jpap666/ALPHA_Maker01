@@ -2,6 +2,8 @@
     var device = null;
     var rawData = null;
     
+     ext.resetAll = function(){};
+     
     // Configure serial baudrate = 9600, parity=none, stopbits=1, databits=8
     
     function appendBuffer( buffer1, buffer2 ) {
@@ -23,6 +25,24 @@
             tryNextDevice();
         }
     }
+
+    var inputArray = [];
+    function processData() {
+        var bytes = new Uint8Array(rawData);
+
+        console.log('Aqui 8. ');
+
+        if (watchdog && (bytes[1] == 77)) {
+            // Seems to be a valid PicoBoard.
+            clearTimeout(watchdog);
+            watchdog = null;
+            console.log('bingo!');
+        }
+
+        //console.log(inputs);
+        rawData = null;
+    }
+
 
     var poller = null;
     var watchdog = null;
