@@ -56,12 +56,13 @@
         device.open({ stopBits: 0, bitRate: 9600, ctsFlowControl: 0 });
         
         device.set_receive_handler(function(data) {
-            console.log('Aqui: 5'); // + data.byteLength);
+            console.log('Aqui: 5');
+            console.log('Recebi: ' + data.byteLength);
             if(!rawData || rawData.byteLength == 1) rawData = new Uint8Array(data);
             else rawData = appendBuffer(rawData, data);
 
             if(rawData.byteLength >= 1) {
-                //console.log(rawData);
+                console.log('rawData '+ rawData);
                 processData();
                 //device.send(pingCmd.buffer);
             }
