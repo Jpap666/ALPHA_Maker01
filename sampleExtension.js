@@ -41,9 +41,12 @@
         var pingCmd = new Uint8Array(1);
         pingCmd[0] = 1;
         poller = setInterval(function() {
+            console.log('Aqui: 6');
             device.send(pingCmd.buffer);
         }, 50);
+        
         watchdog = setTimeout(function() {
+            console.log('Aqui: 7');
             // This device didn't get good data in time, so give up on it. Clean up and then move on.
             // If we get good data then we'll terminate this watchdog.
             clearInterval(poller);
