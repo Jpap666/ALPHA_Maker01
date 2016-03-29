@@ -4,6 +4,15 @@
     
     // Configure serial baudrate = 9600, parity=none, stopbits=1, databits=8
     
+    function appendBuffer( buffer1, buffer2 ) {
+        var tmp = new Uint8Array( buffer1.byteLength + buffer2.byteLength );
+        tmp.set( new Uint8Array( buffer1 ), 0 );
+        tmp.set( new Uint8Array( buffer2 ), buffer1.byteLength );
+        return tmp.buffer;
+    }
+    
+    
+    
     // Extension API interactions
     var potentialDevices = [];
     ext._deviceConnected = function(dev) {
@@ -25,6 +34,7 @@
         if (!device) return;
         console.log('Aqui 4. ');
         device.open({ stopBits: 0, bitRate: 9600, ctsFlowControl: 0 });
+        
         device.set_receive_handler(function(data) {
             console.log('Aqui: 5'); // + data.byteLength);
             if(!rawData || rawData.byteLength == 18) rawData = new Uint8Array(data);
