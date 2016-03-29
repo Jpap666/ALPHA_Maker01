@@ -21,8 +21,9 @@
         // If potentialDevices is empty, device will be undefined.
         // That will get us back here next time a device is connected.
         device = potentialDevices.shift();
-        if (!device) return;
         console.log('Aqui 3. ');
+        if (!device) return;
+        console.log('Aqui 4. ');
         device.open({ stopBits: 0, bitRate: 9600, ctsFlowControl: 0 });
         device.set_receive_handler(function(data) {
             console.log('Aqui: 4'); // + data.byteLength);
