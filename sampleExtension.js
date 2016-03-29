@@ -1,15 +1,6 @@
 (function(ext) {
     var alarm_went_off = false; // This becomes true after the alarm goes off
 
-    // Cleanup function when the extension is unloaded
-    ext._shutdown = function() {};
-
-    // Status reporting code
-    // Use this to report missing hardware, plugin or unsupported browser
-    ext._getStatus = function() {
-    if(!device) return {status: 1, msg: 'Device not connected'};
-    return {status: 2, msg: 'Device connected'};
-    }
 
     ext.set_alarm = function(time) {
        window.setTimeout(function() {
@@ -28,14 +19,40 @@
        return false;
     };
 
+    //*************************************************************
+    ext._deviceRemoved = function(dev) {
+        if(device != dev) return;
+        if(poller) poller = clearInterval(poller);
+        device = null;
+    };
+
+    ext._shutdown = function() {
+        if(device) device.close();
+        if(poller) poller = clearInterval(poller);
+        device = null;
+    };
+
+    ext._getStatus = function() {
+        if(!device) return {status: 1, msg: 'Maker desconectado'};
+        if(watchdog) return {status: 1, msg: 'Procurando pela Maker'};
+        return {status: 2, msg: 'Maker conectada'};
+    }
+
+    //************************************************************
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
-            ['', 'wait %n seconds', 'set_alarm', '2'],
-            ['h', 'when ALPHA Maker is connecet', 'when_alarm'],
-        ]
+            ['h', 'when %m.booleanSensor',         'whenSensorConnected', 'button pressed'],
+            ['h', 'when %m.sensor %m.lessMore %n', 'whenSensorPass',      'slider', '>', 50],
+            ['b', 'sensor %m.booleanSensor?',      'sensorPressed',       'button pressed'],
+            ['r', '%m.sensor sensor value',        'sensor',              'slider']
+        ],
+        menus: {
+            booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
+            sensor: ['slider', 'light', 'sound', 'resistance-A', 'resistance-B', 'resistance-C', 'resistance-D'],
+            lessMore: ['>', '<']
+        },
+        url: '/info/help/studio/tips/ext/PicoBoard/'
     };
-
-    // Register the extension
-    ScratchExtensions.register('Maker extension', descriptor, ext);
+    ScratchExtensions.register('ALPHA Maker', descriptor, ext, {type: 'serial'});
 })({});
