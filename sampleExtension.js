@@ -36,6 +36,8 @@
             // Seems to be a valid PicoBoard.
             clearTimeout(watchdog);
             watchdog = null;
+            clearInterval(poller);
+            poller = null;
             console.log('bingo!');
         }
 
