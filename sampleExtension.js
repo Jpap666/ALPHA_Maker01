@@ -10,7 +10,8 @@
         potentialDevices.push(dev);
         console.log('Aqui 1. ');
         if (!device) {
-            tryNextDevice();
+            console.log('Aqui 2. ');
+            //tryNextDevice();
         }
     }
 
@@ -55,6 +56,7 @@
 
     //*************************************************************
     ext._deviceRemoved = function(dev) {
+        console.log('_deviceRemoved');
         if(device != dev) return;
         if(poller) poller = clearInterval(poller);
         device = null;
@@ -67,6 +69,7 @@
     };
 
     ext._getStatus = function() {
+        console.log('_getStatus');
         if(!device) return {status: 0, msg: 'Maker desconectado'};
         if(watchdog) return {status: 1, msg: 'Procurando pela Maker'};
         return {status: 2, msg: 'Maker conectada'};
