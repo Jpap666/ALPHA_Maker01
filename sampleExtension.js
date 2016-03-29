@@ -31,6 +31,8 @@
         var bytes = new Uint8Array(rawData);
 
         console.log('Aqui 8. ');
+        console.log('bytes[0] ' + bytes[0]);
+        
 
         if (watchdog && (bytes[0] = 77)) {
             // Seems to be a valid PicoBoard.
