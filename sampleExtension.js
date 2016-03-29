@@ -13,7 +13,18 @@
         return tmp.buffer;
     }
     
-    // Extension API interactions
+    //************************************************************
+    //   BLOCOS
+    
+      ext.MakerConectada = function() {
+       
+           return true;
+       }
+    
+    
+    
+    //*************************************************************
+    
     var potentialDevices = [];
     ext._deviceConnected = function(dev) {
         potentialDevices.push(dev);
@@ -33,7 +44,7 @@
         
 
         if (watchdog && (bytes[0] == 77)) {
-            // Seems to be a valid PicoBoard.
+            // Reconhece como sendo uma Maker
             clearTimeout(watchdog);
             watchdog = null;
             clearInterval(poller);
@@ -41,7 +52,7 @@
             console.log('bingo!');
         }
 
-        //console.log(inputs);
+ 
         rawData = null;
     }
 
@@ -116,14 +127,13 @@
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
-            
+                ['h', 'when ALPHA Maker is connected', 'MakerConectada'],
         ],
         menus: {
             booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
             sensor: ['slider', 'light', 'sound', 'resistance-A', 'resistance-B', 'resistance-C', 'resistance-D'],
             lessMore: ['>', '<']
         },
-        url: '/info/help/studio/tips/ext/PicoBoard/'
     };
     console.log('TESTE ');
     ScratchExtensions.register('ALPHA Maker', descriptor, ext, {type: 'serial'});
