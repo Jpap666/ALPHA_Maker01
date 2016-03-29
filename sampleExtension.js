@@ -13,8 +13,6 @@
         return tmp.buffer;
     }
     
-    
-    
     // Extension API interactions
     var potentialDevices = [];
     ext._deviceConnected = function(dev) {
@@ -34,7 +32,7 @@
         console.log('bytes[0] ' + bytes[0]);
         
 
-        if (watchdog && (bytes[0] = 77)) {
+        if (watchdog && (bytes[0] == 77)) {
             // Seems to be a valid PicoBoard.
             clearTimeout(watchdog);
             watchdog = null;
