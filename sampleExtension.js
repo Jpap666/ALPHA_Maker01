@@ -60,7 +60,7 @@
             if(!rawData || rawData.byteLength == 18) rawData = new Uint8Array(data);
             else rawData = appendBuffer(rawData, data);
 
-            if(rawData.byteLength >= 18) {
+            if(rawData.byteLength >= 1) {
                 //console.log(rawData);
                 processData();
                 //device.send(pingCmd.buffer);
