@@ -85,5 +85,6 @@
         },
         url: '/info/help/studio/tips/ext/PicoBoard/'
     };
+    console.log('TESTE ');
     ScratchExtensions.register('ALPHA Maker', descriptor, ext, {type: 'serial'});
 })({});
