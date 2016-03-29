@@ -11,7 +11,7 @@
         console.log('Aqui 1. ');
         if (!device) {
             console.log('Aqui 2. ');
-            //tryNextDevice();
+            tryNextDevice();
         }
     }
 
@@ -22,10 +22,10 @@
         // That will get us back here next time a device is connected.
         device = potentialDevices.shift();
         if (!device) return;
-
+        console.log('Aqui 3. ');
         device.open({ stopBits: 0, bitRate: 9600, ctsFlowControl: 0 });
         device.set_receive_handler(function(data) {
-            console.log('Aqui: '); // + data.byteLength);
+            console.log('Aqui: 4'); // + data.byteLength);
             if(!rawData || rawData.byteLength == 18) rawData = new Uint8Array(data);
             else rawData = appendBuffer(rawData, data);
 
