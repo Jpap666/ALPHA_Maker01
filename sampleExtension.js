@@ -46,8 +46,8 @@
         }
     }
 
-    
-    function checkMaker(data){
+    function checkMaker(bytes){
+        var data = String.fromCharCode.apply(null, bytes);
         console.log('Data: ' + data);
         var t_index = data.indexOf('t');
         var l_index = data.indexOf('l');
