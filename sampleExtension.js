@@ -114,12 +114,12 @@
             }
         });
 
-        // Tell the PicoBoard to send a input data every 50ms
+        // Envia Mn
         var pingCmd = new Uint8Array(1);
-        pingCmd[0] = 1;
+        
         poller = setInterval(function() {
             console.log('Aqui: 6');
-            device.send(pingCmd.buffer);
+            device.send('Mn\r');
         }, 50);
         
         watchdog = setTimeout(function() {
