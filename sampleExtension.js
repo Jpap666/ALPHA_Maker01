@@ -125,7 +125,7 @@
         poller = setInterval(function() {
             console.log('Aqui: 6');
             device.send(pingCmd.buffer);
-        }, 50);
+        }, 200);
         
         watchdog = setTimeout(function() {
             console.log('Aqui: 7');
@@ -137,7 +137,7 @@
             device.close();
             device = null;
             tryNextDevice();
-        }, 250);
+        }, 2000);
     };
 
     //*************************************************************
