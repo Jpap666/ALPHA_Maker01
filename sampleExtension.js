@@ -1,6 +1,7 @@
 (function(ext) {
     var device = null;
     var rawData = null;
+    var notifyConnection = false;
     
      ext.resetAll = function(){};
      
@@ -60,8 +61,10 @@
             console.log('Kernel: ' + kernelVersion);
             console.log('Legal: ' + legalVersion);
 
-            if(kernelVersion >= 106 && legalVersion >= 108)
+            if(kernelVersion >= 106 && legalVersion >= 108) {
+                notifyConnection = true;
                 return true;
+            }    
         }
         return false;
     }
@@ -143,6 +146,7 @@
         if(device != dev) return;
         if(poller) poller = clearInterval(poller);
         device = null;
+        notifyConnection = false;
     };
 
     ext._shutdown = function() {
