@@ -30,6 +30,15 @@
         }, wait*1000);
     };
     
+    ext.wait_random2 = function(callback) {
+        wait = Math.random();
+        console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
+    };
+  
+    
     //*************************************************************
     
     var potentialDevices = [];
@@ -136,7 +145,7 @@
         blocks: [
                 ['h', 'when ALPHA Maker is connected', 'MakerConectada'],
                 ['w', 'wait for random time', 'wait_random'],
-                [' ', 'Synchronous wait for random time', 'wait_random'],
+                [' ', 'Synchronous wait for random time', 'wait_random2'],
         ],
         menus: {
             booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
