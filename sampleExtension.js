@@ -115,11 +115,13 @@
         });
 
         // Envia Mn
-        var pingCmd = new Uint8Array(1);
-        
+        var pingCmd = new Uint8Array(3);
+        pingCmd[0]='M';
+        pingCmd[1]='n';
+        pingCmd[2]=13;
         poller = setInterval(function() {
             console.log('Aqui: 6');
-            device.send('Mn\r');
+            device.send(pingCmd.buffer);
         }, 50);
         
         watchdog = setTimeout(function() {
