@@ -121,14 +121,15 @@
         var pingCmd = new Uint8Array(3);
         pingCmd[0]= 77;  //'M';
         pingCmd[1]= 110; //'n';
-        pingCmd[2]=13;
-        poller = setInterval(function() {
-            console.log('Aqui: 6');
+        pingCmd[2] = 13;
+        //poller = setInterval(function() {
+        poller = setTimeout(function() {
+            console.log('Sending Mn'); //Aqui 6
             device.send(pingCmd.buffer);
-        }, 200);
+        }, 500);
         
         watchdog = setTimeout(function() {
-            console.log('Aqui: 7');
+            console.log('Watchdog triggered'); //Aqui 7
             // This device didn't get good data in time, so give up on it. Clean up and then move on.
             // If we get good data then we'll terminate this watchdog.
             clearInterval(poller);
@@ -137,7 +138,7 @@
             device.close();
             device = null;
             tryNextDevice();
-        }, 15000);
+        }, 5000);
     };
 
     //*************************************************************
