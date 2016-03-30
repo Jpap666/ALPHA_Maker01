@@ -136,6 +136,7 @@
         blocks: [
                 ['h', 'when ALPHA Maker is connected', 'MakerConectada'],
                 ['w', 'wait for random time', 'wait_random'],
+                [' ', 'Synchronous wait for random time', 'wait_random'],
         ],
         menus: {
             booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
