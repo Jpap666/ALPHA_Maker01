@@ -17,9 +17,9 @@
     //   BLOCOS
     
     ext.MakerConectada = function() {
-       
-           return true;
-     };
+        if (notifyConnection) return true;
+            return false;
+    };
     
     
     ext.wait_random = function(callback) {
@@ -30,16 +30,11 @@
         }, wait*1000);
     };
     
-    ext.wait_random2 = function(callback) {
-        wait = Math.random();
-        console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
-    };
   
-    
     //*************************************************************
+    
+    
+    
     
     var potentialDevices = [];
     ext._deviceConnected = function(dev) {
@@ -51,6 +46,28 @@
         }
     }
 
+    
+    function checkMaker(data){
+        console.log('Data: ' + data);
+        var t_index = data.indexOf('t');
+        var l_index = data.indexOf('l');
+        if(t_index >= 0 && l_index >= 0){
+            t_index ++;
+            l_index ++;
+            var kernelVersion = data.substring(t_index, t_index + 4);
+            var legalVersion = data.substring(l_index, l_index + 4);
+
+            console.log('Kernel: ' + kernelVersion);
+            console.log('Legal: ' + legalVersion);
+
+            if(kernelVersion >= 106 && legalVersion >= 108)
+                return true;
+        }
+        return false;
+    }
+
+
+    
     var inputArray = [];
     function processData() {
         var bytes = new Uint8Array(rawData);
@@ -59,7 +76,7 @@
         console.log('bytes[0] ' + bytes[0]);
         
 
-        if (watchdog && (bytes[0] == 77)) {
+        if (watchdog && (checkMaker(bytes))) {
             // Reconhece como sendo uma Maker
             clearTimeout(watchdog);
             watchdog = null;
