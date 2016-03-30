@@ -16,12 +16,19 @@
     //************************************************************
     //   BLOCOS
     
-      ext.MakerConectada = function() {
+    ext.MakerConectada = function() {
        
            return true;
-       }
+     };
     
     
+    ext.wait_random = function(callback) {
+        wait = Math.random();
+        console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
+    };
     
     //*************************************************************
     
@@ -128,6 +135,7 @@
     var descriptor = {
         blocks: [
                 ['h', 'when ALPHA Maker is connected', 'MakerConectada'],
+                ['w', 'wait for random time', 'wait_random'],
         ],
         menus: {
             booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
